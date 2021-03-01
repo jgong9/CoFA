@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1614562035302.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "FFBE1F15",
+    "lastKnownWriteTime" : 1614622233,
+    "last_content_update" : 1614622233665,
+    "path" : "C:/Users/jgong/My_R_packages/CoFA/R/logistic_application.R",
+    "project_path" : "R/logistic_application.R",
+    "properties" : {
+        "cursorPosition" : "10,61",
+        "scrollLine" : "0",
+        "tempName" : "Untitled2"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

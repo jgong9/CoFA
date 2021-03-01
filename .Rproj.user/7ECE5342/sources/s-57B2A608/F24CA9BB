@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1614582161508.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "F24CA9BB",
+    "lastKnownWriteTime" : 1614585144,
+    "last_content_update" : 1614585144,
+    "path" : "C:/Users/jgong/My_R_packages/CoFA/man/data_application.Rd",
+    "project_path" : "man/data_application.Rd",
+    "properties" : {
+        "cursorPosition" : "0,0",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 13,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_doc"
+}

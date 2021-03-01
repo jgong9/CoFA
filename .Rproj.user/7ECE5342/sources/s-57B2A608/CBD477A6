@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1614619702935.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "209278850",
+    "id" : "CBD477A6",
+    "lastKnownWriteTime" : 1614628513,
+    "last_content_update" : 1614628513830,
+    "path" : "C:/Users/jgong/My_R_packages/CoFA/vignettes/vignette.Rmd",
+    "project_path" : "vignettes/vignette.Rmd",
+    "properties" : {
+        "cursorPosition" : "1,12",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 14,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

@@ -1,0 +1,6 @@
+library(CoFA)
+
+simulation_study(snr= 5, N=5)
+
+library(refund)
+pspline.setting()

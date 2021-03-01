@@ -1,0 +1,41 @@
+Package: CoFA
+Type: Package
+Title: What the Package Does (Title Case)
+Version: 0.1.0
+Author: Joonho Gong
+Maintainer: Joonho Gong <jgong9@ncsu.edu>
+Description: This package is develop to conduct the common factor analysis between functional data and multivariate data.
+License: GPL(>=2)
+Encoding: UTF-8
+LazyData: true
+Imports: 
+  mgcv, 
+  MASS, 
+  refund, 
+  face, 
+  Matrix,
+  pracma,
+  pROC, 
+  stats, 
+  splines,
+  foreign,
+  dplyr,
+  CVXR,
+  e1071
+Suggests:
+    knitr,
+    rmarkdown
+RoxygenNote: 7.1.1
+VignetteBuilder: knitr
+Depends: 
+    R (>= 3.6)
+Collate: 
+    'CoFA_CrossCov.R'
+    'read_real_data.R'
+    'data_application.R'
+    'fpca_face_adjust.R'
+    'gam_application.R'
+    'logistic_application.R'
+    'simulation_study.R'
+    'utils.R'
+    'var_omega_est.R'

@@ -22,6 +22,71 @@ library(CoFA)
 
 ## Functions
 
+### CoFA
+`CoFA` is a function to implement the whole estimation and prediction for both common and independent factors. 
+
+#### Argument
+**y_sample:**  The functional data matrix.
+
+**z_sample:**  The multivariate data matrix.
+
+**t_vec:**  The vector of the observation points of functional data.
+
+**y_center:**  A logical value to indicate whether y_sample needs to be centered (TRUE) or not (FALSE).
+
+**z_standard:**  A logical value to indicate whether z_sample needs to be standardized (TRUE) or not (FALSE).
+
+**num_knot:**  An integer to specify the total numbers of knots.
+
+**user_K1:**  An integer for the number of independent factors in functional data, \(K_{1}\), fixed by users. If not specified (NULL), estimation by BEMA method applies. In case that the estimate of \(K_{0}\) is greater than or equal to that of \(K_{0}+K_{1}\), the value of \(K_{1}\) is set to \(3\). 
+
+**user_K2:**  An integer for the number of independent factors in multivariate data, \(K_{2}\), fixed by users. If not specified (NULL), estimation by BEMA method applies. In case that the estimate of \(K_{0}\) is greater than or equal to that of \(K_{0}+K_{2}\), the value of \(K_{2}\) is set to \(3\). 
+
+**gamma:**  The parameter used for weights in adaptive nuclear norm penalty. Default is 2. 
+
+**BEMA_alpha:**  One of the two tuning parameters in the BEMA method. It determines a percentage of nonzero eigenvalue in the middle range. Default is 0.2
+
+**BEMA_beta:**  One of the two tuning parameters in the BEMA method. It controls the probability of over-estimating K1 and K2. Recommended default is 0.1
+
+**control:**  A list of options for cross validation (CV) to choose an optimal tunning parameter \(\tau\). There are 3 arguments: **num_fold**, **num_tau** and **num_rep**. First, **num_fold** determines the number of folds in CV.  **num_fold** specifies the number of candidates for \(\tau\), which are equally spaced in log scale ranging from 0 to \(\sigma^{\gamma+1}_{1}(\mathbf{\Gamma})\). **num_rep** indicates the number of repetition of CV with resampling folds. The chosen \(\tau\) at each iteration are recorded and their average value is used as the final choice. 
+
+
+#### Value
+**K0:**  The estimated number of common factors.
+
+**K1:**  The estimated (or specified by user) number of independent factors in functional data. In case that the estimate of \(K_{0}\) is greater than or equal to that of \(K_{0}+K_{1}\), the value of \(K_{1}\) is set to \(3\). 
+
+**K2:**  The estimated (or specified by user) number of independent factors in multivariate data. In case that the estimate of \(K_{0}\) is greater than or equal to that of \(K_{0}+K_{2}\), the value of \(K_{2}\) is set to \(3\). 
+
+**phi_k0:**  The matrix of estimated \(\phi_{k0}\) evaluated at \(\{t_{j}\}\). The \(k\)th column corresponds to the \(k\)th eigen function. 
+
+**phi_k1:**  The matrix of estimated \(\phi_{k0}\) evaluated at \(\{t_{j}\}\). The \(k\)th column corresponds to the \(k\)th eigen function. 
+
+**v_k0:**  The matrix of estimated \(\nu_{k0}\). The \(k\)th column corresponds to the \(k\)th eigen vector. 
+
+**v_k1:**  The matrix of estimated \(\nu_{k1}\). The \(k\)th column corresponds to the \(k\)th eigen vector. 
+
+**lambda0:**  The vector of estimated variance of common factors. The length is identical to **K0**.
+
+**lambda1:**  The vector of estimated variance of independent factors in functional data. The length is identical to **K1**.
+
+**lambda2:**  The vector of estimated variance of independent factors in multivariate data. The length is identical to **K2**.
+
+**beta:**  The vector of estimated scale parameters \(\beta_{k}\).
+
+**sigma2_fun:**  The estimated variance of random errors in functional data.
+
+**sigma2_mul:**  The estimated variance of random errors in multivariate data.
+
+**mBLUP_com:**  The predicted values of common factors by the marginal BLUP formula.
+
+**mBLUP_fun:**  The predicted values of independent factors in functional data by the marginal BLUP formula.
+
+**mBLUP_mul:**  The predicted values of independent factors in multivariate data by the marginal BLUP formula.
+
+**tau_final:**  The used tuning parameter \(\tau\) in the `CoFA_CrossCov` function.
+
+
 ### CoFA_CrossCov
 `CoFA_CrossCov` finds a matrix \(\mathbf{M}\) and its decomposition that minimizes \(\|\mathbf{\Gamma}-\mathbf{M}\|^{2}_{F}+\tau\|\mathbf{M}\|_{\star,\mathbf{w}}\). A small dataset generated in simuloation study is used to demonstrate how this function works. 
 fitting the coefficient matrix $B$ in the `mSIM` algorithm. We use a small dataset within the package to demonstrate the the usage of this function.
@@ -29,14 +94,18 @@ fitting the coefficient matrix $B$ in the `mSIM` algorithm. We use a small datas
 #### Usage
 ```{R}
 set.seed(1234)
-CoFA_fit = CoFA_CrossCov(Y_cent=Y_example_data, Z_cent=Z_example_data, B_tilde=B_tilde_example, gamma=2,
-                       control = list(num_fold=5, num_tau=50, num_rep=10) )
+t_vec_example <- seq(from=0, to=1, by= 1/49)
+CoFA_CrossCov_fit = CoFA_CrossCov(Y_cent=Y_example_data, Z_cent=Z_example_data, t_vec = t_vec_example,  
+                                  B_tilde=B_tilde_example, gamma=2, 
+                                  control = list(num_fold=5, num_tau=50, num_rep=10) )
 ```
 
 #### Argument
 **Y_cent:**  The centered functional data matrix.
 
 **Z_cent:**  The centered multivariate data matrix.
+
+**t_vec:**  The vector of the observation points of functional data.
 
 **B_tilde:**  The orthonomal B-spline basis function matrix.
 
@@ -59,45 +128,6 @@ CoFA_fit = CoFA_CrossCov(Y_cent=Y_example_data, Z_cent=Z_example_data, B_tilde=B
 **tau_final_vec:**  The vector of chosen candidates of \(\tau\) over **num_rep** iterations.
 
 
-### var_omega_est
-`var_omega_est` estimates \(\sigma^{2}_{\omega}\) with the ordinary least square under a constraint that \(sigma^{2}_{\omega}>0\). 
-
-#### Usage
-```{r}
-# set up parameters
-n <- dim(Y_example_data)[1]
-m <- dim(Y_example_data)[2]
-
-# Estimates for necessary parameters
-K0_est <- CoFA_fit$rank
-est_beta <- rep(0, K0_est )
-
-for(j in 1:K0_est){
-      est_beta[j] <- diag(CoFA_fit$D)[j] / (t(CoFA_fit$U[,j]) %*% C_tilde_example %*% CoFA_fit$U[,j]   )
-}
-
-# Estimate the variance of random noise in multivariate data
-var_omega <- var_omega_est(z_data_cent = Z_example_data, V0_mat = CoFA_fit$V,
-                                 est_beta_vec =  est_beta,
-                                 est_eta_vec = diag(CoFA_fit$D),
-                                 est_K0 = CoFA_fit$rank)
-var_omega
-```
-
-#### Argument
-**z_data_cent:**  The centered multivariate data matrix.
-
-**V0_mat:**  The estimated \(\mathbf{V}_{0}\) matrix.
-
-**est_K0:**  The estimate for \(K_{0}\).
-
-**est_beta_vec:**  The vector of the estimates for \(\beta_{k}\). 
-
-**est_eta_vec:**  The vector of the estimates for \(\eta_{k}\).
-
-##### Value
-**res:**  The estimate for \(\sigma^{2}_{\omega}\).
-
 
 ### simulation_study
 `simulation_study` is used to conduct simulation study with the setting in the reference. There are 3 scenarios with different sample sizes \(n=100,200,500\). It will save the output RData file in the current working directory. For more information, please see the comments and explanation in the R file. Since the control argument of `CoFA_CrossCov` function within this function is set up with intensive CV(both **num_tau** and **num_rep** are 100), it will take a lot of time if **N** is large. 
@@ -105,14 +135,17 @@ var_omega
 
 #### Usage
 ```{r}
-simulation_result <- simulation_study(snr=5, N=1)
+simulation_result <- simulation_study(snr=5, sample_size=200, N=1, num_resampling_CV=10)
 ```
 
 ##### Argument
 **snr:**  The signal noise level.
 
+**sample_size:** A numeric vector of sample sizes.
+
 **N:** The number of iteration for each scenario.
 
+**num_resampling_CV:** The number of repetitions for CoFA function
 
 #### Value
 **results_final:**  The list that contains the simulation study results. It will be also saved in the current working directory. 
@@ -149,6 +182,8 @@ data_matrix <- data_application(which_ear = "right", num_knot = 20)
 
 **num_knot:**  A single or sequence of positive integers specifying the total number of knots used in the analysis. By default, cubic spline basis is chosen so that 8 of the knots will be out of 0 and 1.  
 
+**num_resampling_CV:** The number of repetitions for CoFA function
+
 
 #### Value
 **res:**  The list that contains the estimation results and the standardized multivariate data matrix which will be used for `gam_application` and `logistic_application`. It will be also saved as .rda file in the current working directory. 
@@ -160,12 +195,13 @@ data_matrix <- data_application(which_ear = "right", num_knot = 20)
 
 #### Usage
 ```{r}
-gam_result <- gam_application(which_ear = "right")
+gam_result <- gam_application(which_ear = "right", model_num = 9)
 ```
 
 ##### Argument
 **which_ear:**  A character variable to choose either "right" ear WBA data or "left" ear WBA data. 
 
+**model_num:** A numeric vector of the model numbers which can be positive integers from 1 to 9.
 
 #### Value
 **res:**  The list that contains the GAM model fits and the adjusted R-square table. It will be also saved as .rda file in the current working directory. 
@@ -183,7 +219,7 @@ logistic_result <- logistic_application(which_ear = "right", num_rep=10)
 ##### Argument
 **which_ear:**  A character variable to choose either "right" ear WBA data or "left" ear WBA data. 
 
-**num_rep:**  A numeric value to specify the number of repetition for resampling to alleviate the skewed label distribution. 
+**num_rep:**  A numeric value to specify the number of repetition for resampling to alleviate the skewed label distribution in NHANES data. 
 
 
 #### Value

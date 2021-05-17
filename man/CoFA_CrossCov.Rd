@@ -7,6 +7,7 @@
 CoFA_CrossCov(
   Y_cent,
   Z_cent,
+  t_vec,
   B_tilde,
   gamma = 2,
   control = list(num_rep = 100, num_fold = 5, num_tau = 100)
@@ -16,6 +17,8 @@ CoFA_CrossCov(
 \item{Y_cent}{The centered functional data matrix}
 
 \item{Z_cent}{The centerd multivariate data matrix}
+
+\item{t_vec}{A vector of the observation points of functional data}
 
 \item{B_tilde}{The orthogonal B-spline basis matrix}
 

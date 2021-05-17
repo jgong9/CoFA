@@ -10,7 +10,7 @@ logistic_application(which_ear = "right", num_rep = 1000)
 \arguments{
 \item{which_ear}{Either "right" or "left" to choose which ear of data is loaded}
 
-\item{num_rep}{The number of iterations to overcom highlt skewed class distribution}
+\item{num_rep}{The number of resampling to overcome highly skewed class distribution in data}
 }
 \value{
 A list that contains the table of the averaged AUC values for different knot settings

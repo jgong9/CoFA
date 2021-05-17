@@ -54,7 +54,11 @@ data_whole_temp_2 <- inner_join(data_whole_temp_1, temp_data, by="SEQN")
 
 
 ## 2-d Physical volume of ear canal
-temp_data <- AUX_I[, c("SEQN", "AUXTPVR")]
+if( select_ear == "right"){
+  temp_data <- AUX_I[, c("SEQN", "AUXTPVR")]
+} else if( select_ear == "left" ) {
+  temp_data <- AUX_I[, c("SEQN", "AUXTPVL")]
+}
 data_whole_temp_3 <- inner_join(data_whole_temp_2, temp_data, by="SEQN")
 
 

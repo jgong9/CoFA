@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1614750508927.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3696707522",
+    "id" : "8F08AC83",
+    "lastKnownWriteTime" : 1614619346,
+    "last_content_update" : 1614750567565,
+    "path" : "~/My_R_Package/CoFA/R/gam_application.R",
+    "project_path" : "R/gam_application.R",
+    "properties" : {
+        "cursorPosition" : "292,40",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

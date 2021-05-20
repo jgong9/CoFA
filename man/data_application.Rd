@@ -5,12 +5,18 @@
 \title{A function to conduct real data application
 Note that there is a seed number implanted for reproducibility}
 \usage{
-data_application(which_ear = "right", num_knot = 12:44)
+data_application(
+  which_ear = "right",
+  num_knot = 12:44,
+  num_resampling_CV = 100
+)
 }
 \arguments{
 \item{which_ear}{Either "right" or "left" to choose which ear of data is loaded}
 
 \item{num_knot}{The vector of total numbers of knots}
+
+\item{num_resampling_CV}{The number of resampling for the cross validation process with respect to tau}
 }
 \value{
 A list that contains results of estimation and prediction for different number of knots and the standardized multivariate data matrix

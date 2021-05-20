@@ -26,7 +26,6 @@ phi_k1 <- function(k, t_phi1){
 
 
 ### Internal function of refund R package
-# pspline.setting <- function(x,knots=select_knots(x,35),p=3,m=2,periodicity=FALSE,weight=NULL){
 pspline.setting <- function(x,knots,p=3,m=2,periodicity=FALSE,weight=NULL){
 
   # x: the marginal data points
@@ -119,5 +118,19 @@ pspline.setting <- function(x,knots,p=3,m=2,periodicity=FALSE,weight=NULL){
     "P" = P)
 
   return(List)
+}
+
+
+
+# Numerical integration by Trapezoidal rule from refund R package
+quadWeights<- function(argvals, method = "trapezoidal")
+{
+  ret <- switch(method,
+                trapezoidal = {D <- length(argvals)
+                1/2*c(argvals[2] - argvals[1], argvals[3:D] -argvals[1:(D-2)], argvals[D] - argvals[D-1])},
+                midpoint = c(0,diff(argvals)),  # why is this called 'midpoint'???
+                stop("function quadWeights: choose either trapezoidal or midpoint quadrature rule"))
+
+  return(ret)
 }
 

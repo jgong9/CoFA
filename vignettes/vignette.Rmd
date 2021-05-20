@@ -25,6 +25,31 @@ library(CoFA)
 ### CoFA
 `CoFA` is a function to implement the whole estimation and prediction for both common and independent factors. 
 
+<<<<<<< HEAD
+=======
+#### Usage
+```{R}
+set.seed(1234)
+## 1. Read in real data
+real_data <- read_real_data(select_ear = "right")
+
+data_ready <- real_data$data_ready
+
+y_sample <- data_ready[, which(names(data_ready) == "WBXA001") : which(names(data_ready) == "WBXA107") ]
+y_sample <- as.matrix(y_sample)
+z_sample <- data_ready[, -c(1:323, dim(data_ready)[2]-1,  dim(data_ready)[2]) ]
+z_sample <- as.matrix(z_sample)
+
+t_frequencies <- data_ready[1, which(names(data_ready) == "WBXF001") : which(names(data_ready) == "WBXF107") ]
+t_temp  <- log( as.numeric(t_frequencies) )
+t_vec <- ( t_temp / (t_temp[length(t_temp)] - t_temp[1]) ) -  ( t_temp / (t_temp[length(t_temp)] - t_temp[1]) )[1]
+
+## 2. Apply CoFA method
+CoFA_fit <- CoFA(y_sample = y_sample, z_sample = z_sample, y_center = TRUE, z_standard = TRUE, 
+                 t_vec = t_vec, num_knot = 37)
+```
+
+>>>>>>> 8641356d47df019f78f7131f416d14d7edfa9bd8
 #### Argument
 **y_sample:**  The functional data matrix.
 
@@ -136,6 +161,13 @@ CoFA_CrossCov_fit = CoFA_CrossCov(Y_cent=Y_example_data, Z_cent=Z_example_data, 
 #### Usage
 ```{r}
 simulation_result <- simulation_study(snr=5, sample_size=200, N=1, num_resampling_CV=10)
+<<<<<<< HEAD
+=======
+
+## To reproduce the results in simulation study
+# simulation_result <- simulation_study(snr=5, sample_size=c(100,200,500), N=1000, num_resampling_CV=100)
+# simulation_result <- simulation_study(snr=5, sample_size=c(100,200,500), N=1000, num_resampling_CV=100)
+>>>>>>> 8641356d47df019f78f7131f416d14d7edfa9bd8
 ```
 
 ##### Argument
@@ -174,7 +206,7 @@ data_list <- read_real_data(select_ear = "right")
 
 #### Usage
 ```{r}
-data_matrix <- data_application(which_ear = "right", num_knot = 20)
+result_list <- data_application(which_ear = "right", num_knot = 20)
 ```
 
 ##### Argument
@@ -196,6 +228,14 @@ data_matrix <- data_application(which_ear = "right", num_knot = 20)
 #### Usage
 ```{r}
 gam_result <- gam_application(which_ear = "right", model_num = 9)
+<<<<<<< HEAD
+=======
+
+## To reproduce the results in data application
+# read_data <- read_real_data( select_ear = "right")
+# data_app_right <- data_application(which_ear = "right", num_knot = 12:44, num_resampling_CV = 100)
+# gam_right <- gam_application(which_ear = "right", model_num = 1:9 )
+>>>>>>> 8641356d47df019f78f7131f416d14d7edfa9bd8
 ```
 
 ##### Argument
@@ -214,6 +254,11 @@ gam_result <- gam_application(which_ear = "right", model_num = 9)
 #### Usage
 ```{r}
 logistic_result <- logistic_application(which_ear = "right", num_rep=10)
+
+## To reproduce the results in data application
+# read_data <- read_real_data( select_ear = "right")
+# data_app_right <- data_application(which_ear = "right", num_knot = 12:44, num_resampling_CV = 100)
+# logistic_right <- logistic_application(which_ear = "right", num_rep = 1000)
 ```
 
 ##### Argument

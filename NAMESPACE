@@ -7,8 +7,11 @@ export(gam_application)
 export(logistic_application)
 export(read_real_data)
 export(simulation_study)
+<<<<<<< HEAD
 import(CVXR)
 import(fdapace)
+=======
+>>>>>>> 8641356d47df019f78f7131f416d14d7edfa9bd8
 import(foreign)
 importFrom(MASS,mvrnorm)
 importFrom(Matrix,Matrix)

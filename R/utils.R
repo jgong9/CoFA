@@ -26,7 +26,6 @@ phi_k1 <- function(k, t_phi1){
 
 
 ### Internal function of refund R package
-# pspline.setting <- function(x,knots=select_knots(x,35),p=3,m=2,periodicity=FALSE,weight=NULL){
 pspline.setting <- function(x,knots,p=3,m=2,periodicity=FALSE,weight=NULL){
 
   # x: the marginal data points
@@ -123,7 +122,11 @@ pspline.setting <- function(x,knots,p=3,m=2,periodicity=FALSE,weight=NULL){
 
 
 
+<<<<<<< HEAD
 
+=======
+# Numerical integration by Trapezoidal rule from refund R package
+>>>>>>> 8641356d47df019f78f7131f416d14d7edfa9bd8
 quadWeights<- function(argvals, method = "trapezoidal")
 {
   ret <- switch(method,
@@ -135,6 +138,7 @@ quadWeights<- function(argvals, method = "trapezoidal")
   return(ret)
 }
 
+<<<<<<< HEAD
 ##########################################################################
 ## For P-spline for covariance function estimation
 
@@ -246,3 +250,5 @@ pspline.setting_fbps <-function(x,knots=35,p=3,m=2){
   return(List)
 }
 ########################################################################
+=======
+>>>>>>> 8641356d47df019f78f7131f416d14d7edfa9bd8

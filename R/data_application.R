@@ -9,7 +9,10 @@
 #' @importFrom splines splineDesign
 #' @importFrom stats cov
 #' @importFrom RMTstat qmp ptw
+<<<<<<< HEAD
 #' @import CVXR
+=======
+>>>>>>> 8641356d47df019f78f7131f416d14d7edfa9bd8
 
 
 data_application <- function(which_ear = "right", num_knot = 12:44, num_resampling_CV = 100

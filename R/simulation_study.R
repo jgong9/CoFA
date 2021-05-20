@@ -13,6 +13,7 @@
 #' @importFrom MASS mvrnorm
 #' @importFrom Matrix Matrix
 #' @importFrom RMTstat qmp ptw
+<<<<<<< HEAD
 #' @importFrom refund fpca.sc
 #' @import CVXR
 #' @import fdapace
@@ -20,8 +21,15 @@
 
 simulation_study <- function(snr = 5, sample_size = c(100, 200, 500), N = 1000, num_resampling_CV = 100
 ){
+=======
 
 
+>>>>>>> 8641356d47df019f78f7131f416d14d7edfa9bd8
+
+simulation_study <- function(snr = 5, sample_size = c(100, 200, 500), N = 1000, num_resampling_CV = 100
+){
+
+<<<<<<< HEAD
   results_final <- vector(mode = "list", length = 3)
   # A list of all reulsts of every scenario
 
@@ -36,8 +44,61 @@ simulation_study <- function(snr = 5, sample_size = c(100, 200, 500), N = 1000, 
   knots_vec <- select.knots(t_vec, knots = knots_set ,p=3)
   B_mat <- splineDesign(knots_vec, t_vec, ord = 4)
   # knot and B-spline basis setting
+=======
 
+  results_final <- vector(mode = "list", length = 3)
+  # A list of all reulsts of every scenario
 
+  ###############################
+  ###### Parameter Setting ######
+  ###############################
+  t_vec <- seq(from=0, to=1, by= 1/49)
+  # observation points of functional data
+>>>>>>> 8641356d47df019f78f7131f416d14d7edfa9bd8
+
+  m <- length(t_vec)
+  knots_set <- 16
+  knots_vec <- select.knots(t_vec, knots = knots_set ,p=3)
+  B_mat <- splineDesign(knots_vec, t_vec, ord = 4)
+  # knot and B-spline basis setting
+
+  K0 <- 2
+  # the number of common latent factors
+  K1 <- 2
+  # the number of independent latent factors in both functional and multivariate data
+
+<<<<<<< HEAD
+  lambdas <- 1/ (1:4 + 1)^2
+  # variances of random factors for common and indepedent components in functional data
+
+  sigma2_error <- sum(lambdas) / snr
+  # variance of noise in functional data
+
+  p <- 20
+  # Dimension of multivariate data
+
+  beta_k <- sqrt(c(3,2))
+  # scale parameters in multivariate data
+
+  length_sample_size <- length(sample_size)
+
+  set.seed(12345)
+  V_sqr <- randortho(p, type="orthonormal")
+  # random orthonormal vectors for true eigen vectors in multivariate data
+  V_mat <- V_sqr[,(1:K0)]
+  V_rest <- V_sqr[, (K0+1):(K0+2)]
+  # V_mat for common components and V_rest for independent ones
+
+  Sigma_omega <- diag( c(0.4, 0.1))
+  # variances of independent components in multivariate data
+
+  error_omega <- 1/(snr * p) * ( sum( beta_k^2 * lambdas[c(1,3)]  ) +  sum( diag(Sigma_omega)) )
+  # variance of random noise in multivariate data
+
+  # Two tuning parameters recommended in BEMA method
+  BEMA_alpha <- 0.2
+  BEMA_beta <- 0.1
+=======
   K0 <- 2
   # the number of common latent factors
   K1 <- 2
@@ -69,11 +130,45 @@ simulation_study <- function(snr = 5, sample_size = c(100, 200, 500), N = 1000, 
 
   error_omega <- 1/(snr * p) * ( sum( beta_k^2 * lambdas[c(1,3)]  ) +  sum( diag(Sigma_omega)) )
   # variance of random noise in multivariate data
+>>>>>>> 8641356d47df019f78f7131f416d14d7edfa9bd8
 
   # Two tuning parameters recommended in BEMA method
   BEMA_alpha <- 0.2
   BEMA_beta <- 0.1
 
+<<<<<<< HEAD
+  ####################################################
+  #### B_tilde orthonomal B-spline basis matrix  #####
+  ####################################################
+  # G <- (t(B_mat) %*% B_mat / m)
+  w <- quadWeights(argvals = t_vec , method = "trapezoidal")
+  W_mat <- diag(w)
+  W_sqrt <- diag( sqrt(w) )
+  G <- t(B_mat) %*% W_mat %*% B_mat
+  G_sqrt <- eigen(G)$vectors %*% diag( sqrt(eigen(G)$values)  ) %*% t( eigen(G)$vectors )
+  G_sqrt_inverse <- eigen(G)$vectors %*% diag( 1/sqrt(eigen(G)$values)  ) %*% t( eigen(G)$vectors )
+  B_tilde <- B_mat %*% G_sqrt_inverse
+
+
+  ###############################################
+  ## local functions for simulation study only ##
+  ###############################################
+
+  #### Functions for data generation #####
+  y <- function(i, t_y){
+    mu(t_y) +
+      t(sapply(1:K0,phi_k0,t_phi0=t_y)) %*% xi_sample[i, seq(from=1, to=K0+K1, by=2)] +
+      t(sapply(1:K1,phi_k1,t_phi1=t_y)) %*% xi_sample[i, seq(from=2, to=K0+K1, by=2)]
+  }
+  # functional data generation without error
+
+  z <- function(i){
+    V_mat %*% (  beta_k * xi_sample[i, seq(from=1, to=K0+K1, by=2)]  )  + V_rest %*% xi_sample[i, seq(from=K0+K1+1, to=dim(xi_sample)[2], by=1)]
+  }
+  # multivariate data generation
+
+
+=======
 
   ####################################################
   #### B_tilde orthonomal B-spline basis matrix  #####
@@ -106,6 +201,7 @@ simulation_study <- function(snr = 5, sample_size = c(100, 200, 500), N = 1000, 
   # multivariate data generation
 
 
+>>>>>>> 8641356d47df019f78f7131f416d14d7edfa9bd8
   #### Functions for estimation performance assessment #####
   ## Cross covariance function
   est_cross_cov_estK0 <- function(cross_s,c_prime=K0_est, z_p=p_loop){

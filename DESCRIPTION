@@ -1,7 +1,7 @@
 Package: CoFA
 Type: Package
 Title: What the Package Does (Title Case)
-Version: 0.1.0
+Version: 0.1.1
 Author: Joonho Gong
 Maintainer: Joonho Gong <jgong9@ncsu.edu>
 Description: This package is develop to conduct the common factor analysis between functional data and multivariate data.
@@ -11,7 +11,6 @@ LazyData: true
 Imports: 
   mgcv, 
   MASS, 
-  refund, 
   face, 
   Matrix,
   pracma,
@@ -19,9 +18,7 @@ Imports:
   stats, 
   splines,
   foreign,
-  dplyr,
-  CVXR,
-  e1071
+  dplyr
 Suggests:
     knitr,
     rmarkdown

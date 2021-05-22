@@ -174,7 +174,6 @@ data_application <- function(which_ear = "right", num_knot = 12:44, num_resampli
     cov_y <- t(y_demeaned_mat) %*% (y_demeaned_mat) / (n-1)
     svd_indep_fun <- svd( P_U1 %*% t(B_tilde) %*% ( W_mat %*% cov_y %*% W_mat  ) %*% B_tilde  %*% t(P_U1) )
 
-    print(length(svd_indep_fun$d))
 
     for(j in 1:length(svd_indep_fun$d)){
       est_lambda1[i, j] <-   (t(B_tilde %*% svd_indep_fun$u[,j]) %*% W_mat %*% cov_fpcaSC_cov_hat %*% W_mat %*% B_tilde %*% svd_indep_fun$u[,j]  )

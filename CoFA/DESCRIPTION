@@ -1,7 +1,7 @@
 Package: CoFA
 Type: Package
 Title: What the Package Does (Title Case)
-Version: 0.1.1
+Version: 0.1.2
 Author: Joonho Gong
 Maintainer: Joonho Gong <jgong9@ncsu.edu>
 Description: This package is develop to conduct the common factor analysis between functional data and multivariate data.

@@ -116,7 +116,7 @@ data_application <- function(which_ear = "right", num_knot = 12:44, num_resampli
     cov_y_face <- fit_face$Cov
 
     ### 4-2. fpca.sc
-    fpca_sc_fit <- fpca_sc_modified(Y = y_demeaned_mat, ydata = NULL, Y.pred = NULL, argvals = NULL, random.int = FALSE,
+    fpca_sc_fit <- fpca_sc_modified(Y = y_demeaned_mat, ydata = NULL, Y.pred = NULL, argvals = t_vec, random.int = FALSE,
                                     nbasis = dim(B_tilde)[2] , pve = 0.99, npc = NULL, var = TRUE, simul = FALSE, sim.alpha = 0.95,
                                     useSymm = FALSE, makePD = FALSE, center = FALSE, cov.est.method = 2, integration = "trapezoidal")
 
@@ -140,36 +140,24 @@ data_application <- function(which_ear = "right", num_knot = 12:44, num_resampli
 
     K0_est <- CoFA_CrossCov_fit$rank
     est_K0[i] <- K0_est
-    est_eta[i, 1:K0_est] <- svd_Gamma$d[1:K0_est]
 
 
-    if(K0_est == 1){
 
+    for(j in 1:K0_est){
+      est_eta[i, j] <- t(CoFA_CrossCov_fit$U[,j]) %*% Gamma_mat %*% CoFA_CrossCov_fit$V[,j]
+      est_beta[i,j] <- est_eta[i, j] / ( t(B_tilde %*% CoFA_CrossCov_fit$U[,j]) %*%  W_mat %*% cov_fpcaSC_cov_hat %*%  W_mat %*% B_tilde %*% CoFA_CrossCov_fit$U[,j] )
+      est_lambda0[i, j] <-   (t(B_tilde %*% CoFA_CrossCov_fit$U[,j]) %*%  W_mat %*% cov_fpcaSC_cov_hat %*%  W_mat %*% B_tilde %*% CoFA_CrossCov_fit$U[,j]  )
 
-      est_beta[i,1] <- est_eta[i, 1] / ( t(B_tilde %*% CoFA_CrossCov_fit$U) %*%  W_mat %*% cov_fpcaSC_cov_hat %*%  W_mat %*% B_tilde %*% CoFA_CrossCov_fit$U )
-      est_lambda0[i, 1] <-   (t(B_tilde %*% CoFA_CrossCov_fit$U) %*%  W_mat %*% cov_fpcaSC_cov_hat %*%  W_mat %*% B_tilde %*% CoFA_CrossCov_fit$U  )
-
-    } else {
-
-      for(j in 1:K0_est){
-
-        est_beta[i,j] <- est_eta[i, j] / ( t(B_tilde %*% CoFA_CrossCov_fit$U[,j]) %*%  W_mat %*% cov_fpcaSC_cov_hat %*%  W_mat %*% B_tilde %*% CoFA_CrossCov_fit$U[,j] )
-        est_lambda0[i, j] <-   (t(B_tilde %*% CoFA_CrossCov_fit$U[,j]) %*%  W_mat %*% cov_fpcaSC_cov_hat %*%  W_mat %*% B_tilde %*% CoFA_CrossCov_fit$U[,j]  )
-
-      }
     }
+
 
 
 
 
     ### 8. Estimation for independent component part
     ## 8-a functional data
-    if(K0_est == 1){
-      U0 <- CoFA_CrossCov_fit$U
-    } else{
-      U0 <- CoFA_CrossCov_fit$U[,1:K0_est]
-    }
 
+    U0 <- CoFA_CrossCov_fit$U[,1:K0_est]
     P_U1 <- diag(1, dim(B_mat)[2]) - U0 %*% solve( t(U0) %*% U0) %*% t(U0)
     cov_y <- t(y_demeaned_mat) %*% (y_demeaned_mat) / (n-1)
     svd_indep_fun <- svd( P_U1 %*% t(B_tilde) %*% ( W_mat %*% cov_y %*% W_mat  ) %*% B_tilde  %*% t(P_U1) )

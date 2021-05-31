@@ -175,8 +175,8 @@ CoFA_CrossCov <- function(Y_cent , Z_cent, t_vec, B_tilde, gamma=2,
                                 ##
 
                                 res <- list(
-                                  U = svd_Gamma$u[,1:est_rank],
-                                  V = svd_Gamma$v[,1:est_rank],
+                                  U = as.matrix(svd_Gamma$u[,1:est_rank]),
+                                  V = as.matrix(svd_Gamma$v[,1:est_rank]),
                                   D = D,
                                   rank=est_rank,
                                   tau_final = tau_final,
